@@ -439,7 +439,7 @@ advlog (
 
   // non-loop optimization, only download through the last message.
   LogBufferSize = min (LogBufferSize, (ULONG)(EndAddress - EntryAddress));
-  if (TailBytes > LogBufferSize) {
+  if (TailBytes >= LogBufferSize) {
     // Don't bother with tail if it's larger than buffer.
     TailBytes = 0;
   }
