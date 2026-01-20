@@ -305,6 +305,7 @@ advlog (
   ULONG                             TokenCount;
   ULONG                             TokenIndex;
   PCSTR                             HelpString = "Usage: !advlog [-t[bytes]] [address]\n";
+  CONST UINT32                      MessageSignature = 0x324d4c41; // 'ALM2'
 
   // NOTE: This implementation is a crude first past, The following should be done
   // in the future.
@@ -468,7 +469,7 @@ advlog (
   if (TailBytes != 0) {
     while (Offset + sizeof (ADVANCED_LOGGER_MESSAGE_ENTRY_V2) <= End) {
       Entry = (ADVANCED_LOGGER_MESSAGE_ENTRY_V2 *)(LogBuffer + Offset);
-      if (Entry->Signature != 0x324d4c41) {
+      if (Entry->Signature != MessageSignature) {
         Offset += 8;
         continue;
       }
@@ -481,7 +482,7 @@ advlog (
 
   while (Offset + sizeof (ADVANCED_LOGGER_MESSAGE_ENTRY_V2) <= End) {
     Entry = (ADVANCED_LOGGER_MESSAGE_ENTRY_V2 *)(LogBuffer + Offset);
-    if (Entry->Signature != 0x324d4c41) {
+    if (Entry->Signature != MessageSignature) {
       dprintf ("\nBad message signature!! Entry Offset: 0x%x\n", Offset);
       break;
     }
